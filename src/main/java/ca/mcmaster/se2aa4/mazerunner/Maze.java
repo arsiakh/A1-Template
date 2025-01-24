@@ -9,16 +9,41 @@ import java.util.List;
 
 public class Maze {
    
-    String[][] maze;
-    List<String> lines;
-    int row;
-    int col;
+    private String[][] maze;
+    private List<String> lines;
+    private int row;
+    private int col;
 
     public Maze(List<String> lines) {
         this.lines = lines;
         this.row = lines.size();
         this.col = lines.get(0).length();
         this.maze = new String[row][col];
+        copyMaze();
+    }
+    // Getter for maze grid
+    public String[][] getMaze() {
+        return maze;
+    }
+
+    // Setter for maze grid
+    public void setMaze(String[][] maze) {
+        this.maze = maze;
+    }
+
+    // Getter for lines
+    public List<String> getLines() {
+        return lines;
+    }
+
+    // Getter for rows
+    public int getRow() {
+        return row;
+    }
+
+    // Getter for columns
+    public int getCol() {
+        return col;
     }
 
     public void copyMaze() {
@@ -43,15 +68,19 @@ public class Maze {
         }
     }
 
-    public void checkValidEntryOrExit() { 
+    public String checkValidEntryOrExit() { 
+        StringBuilder openRows = new StringBuilder();
         for (int i = 0; i < row; i++) {
             if (maze[i][0] == "PASS") {
                 maze[i][0] = "ENTRY";
+                openRows.append(i);
             }
             if (maze[i][col - 1] == "PASS") {
                 maze[i][col - 1] = "EXIT";
+                openRows.append(i);
             }
         }
+        return openRows.toString();
     }
 
     public void main() {
