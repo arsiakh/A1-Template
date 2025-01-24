@@ -1,11 +1,14 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.commons.cli.*;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ca.mcmaster.se2aa4.mazerunner.Maze;
 
 public class Main {
 
@@ -27,12 +30,20 @@ public class Main {
                 // Proceed with processing the input file
                 logger.info("**** Reading the maze from file " + inputFile);
                 BufferedReader reader = new BufferedReader(new FileReader(inputFile));
+                List<String> lines = new ArrayList<>();
                 String line;
                 while ((line = reader.readLine()) != null) {
-                    for (int idx = 0; idx < line.length(); idx++) {
-                        if (line.charAt(idx) == '#') {
+                    lines.add(line);
+                }
+
+                Maze maze = new Maze(lines);
+                maze.main();
+                
+                for (String mazeLine : lines) {
+                    for (int idx = 0; idx < mazeLine.length(); idx++) {
+                        if (mazeLine.charAt(idx) == '#') {
                             logger.trace("WALL ");
-                        } else if (line.charAt(idx) == ' ') {
+                        } else if (mazeLine.charAt(idx) == ' ') {
                             logger.trace("PASS ");
                         }
                     }
