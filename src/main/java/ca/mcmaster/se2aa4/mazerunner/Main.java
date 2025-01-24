@@ -8,7 +8,6 @@ import org.apache.commons.cli.*;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import ca.mcmaster.se2aa4.mazerunner.Maze;
 
 public class Main {
 
@@ -21,6 +20,7 @@ public class Main {
             Options options = new Options();
             // add i option (expects an argument for the input file)
             options.addOption("i", true, "specify the input file");
+            options.addOption("p", true, "verify input path");
             CommandLineParser parser = new DefaultParser();
             CommandLine cmd = parser.parse(options, args);  
 
@@ -35,19 +35,31 @@ public class Main {
                 while ((line = reader.readLine()) != null) {
                     lines.add(line);
                 }
-
                 Maze maze = new Maze(lines);
-                maze.main();
-                
-                for (String mazeLine : lines) {
-                    for (int idx = 0; idx < mazeLine.length(); idx++) {
-                        if (mazeLine.charAt(idx) == '#') {
-                            logger.trace("WALL ");
-                        } else if (mazeLine.charAt(idx) == ' ') {
-                            logger.trace("PASS ");
-                        }
+                Explorer explorer = new Explorer(maze);
+                if (cmd.hasOption("p")) {
+                    String path = cmd.getOptionValue("p");
+                    if (path.equals(explorer.moveForward())) {
+                        logger.info("PATH COMPUTED");
+                    } else {
+                        logger.info("PATH NOT COMPUTED");
                     }
-                    logger.trace(System.lineSeparator());
+
+                }
+                else { 
+                
+                    logger.info(explorer.moveForward());
+                    for (String mazeLine : lines) {
+                        for (int idx = 0; idx < mazeLine.length(); idx++) {
+                            if (mazeLine.charAt(idx) == '#') {
+                                logger.trace("WALL ");
+                            } else if (mazeLine.charAt(idx) == ' ') {
+                                logger.trace("PASS ");
+                            }
+                        }
+                        logger.trace(System.lineSeparator());
+                    }
+
                 }
             } 
             

@@ -4,22 +4,23 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
-
-
 public class Maze {
    
     private String[][] maze;
     private List<String> lines;
     private int row;
     private int col;
+    private String entryExit;
 
     public Maze(List<String> lines) {
         this.lines = lines;
         this.row = lines.size();
         this.col = lines.get(0).length();
         this.maze = new String[row][col];
+        this.entryExit = "";
         copyMaze();
+        checkValidEntryOrExit();
+        printMaze();
     }
     // Getter for maze grid
     public String[][] getMaze() {
@@ -45,6 +46,10 @@ public class Maze {
     public int getCol() {
         return col;
     }
+    
+    public String getEntryExit() {
+        return entryExit;
+    }
 
     public void copyMaze() {
         for (int i = 0; i < row; i++) {
@@ -68,7 +73,7 @@ public class Maze {
         }
     }
 
-    public String checkValidEntryOrExit() { 
+    public void checkValidEntryOrExit() { 
         StringBuilder openRows = new StringBuilder();
         for (int i = 0; i < row; i++) {
             if (maze[i][0] == "PASS") {
@@ -80,14 +85,9 @@ public class Maze {
                 openRows.append(i);
             }
         }
-        return openRows.toString();
+        entryExit = openRows.toString();
     }
 
-    public void main() {
-        copyMaze();
-        checkValidEntryOrExit();
-        printMaze();
-    }
     
     
 }

@@ -10,30 +10,31 @@ public class Explorer {
         this.mazeClass = mazeClass;
         this.maze = mazeClass.getMaze();
                 
-        
-
     }
 
-    
     public String moveForward() { 
-        String openRows = mazeClass.checkValidEntryOrExit();
+        String openRows = mazeClass.getEntryExit();
         int cols = mazeClass.getCol();
         int firstDigit = Character.getNumericValue(openRows.charAt(0));
         int secondDigit = Character.getNumericValue(openRows.charAt(1));
-        int i = 1;
+        int currentCol = 1;
         StringBuilder path = new StringBuilder();
-        while(!"EXIT".equals(maze[secondDigit][cols-1])) {
-            if(maze[firstDigit][i] == "PASS") {
-                maze[firstDigit][i] = maze[firstDigit][i+1];
+        while (!"EXIT".equals(maze[secondDigit][currentCol])) {
+            if ("PASS".equals(maze[firstDigit][currentCol])) {
+                // Append "F" for the forward move
                 path.append("F");
-
+                // Move to the next column
+                currentCol++;
+            } 
             }
-         }
-         return path.toString();
+            return (path.toString());    
+        }
+            
+        
 
 
         
 
     }
     
-}
+
