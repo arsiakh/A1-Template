@@ -10,14 +10,14 @@ public class Maze {
     private List<String> lines;
     private int row;
     private int col;
-    private String entryExit;
+    private int entryRow = -1;
 
     public Maze(List<String> lines) {
         this.lines = lines;
         this.row = lines.size();
         this.col = lines.get(0).length();
         this.maze = new String[row][col];
-        this.entryExit = "";
+        this.entryRow = -1;
         copyMaze();
         checkValidEntryOrExit();
         printMaze();
@@ -47,8 +47,8 @@ public class Maze {
         return col;
     }
     
-    public String getEntryExit() {
-        return entryExit;
+    public int getEntryRow() {
+        return entryRow;
     }
 
     public void copyMaze() {
@@ -78,14 +78,14 @@ public class Maze {
         for (int i = 0; i < row; i++) {
             if (maze[i][0] == "PASS") {
                 maze[i][0] = "ENTRY";
-                openRows.append(i);
+                entryRow = i;
             }
             if (maze[i][col - 1] == "PASS") {
                 maze[i][col - 1] = "EXIT";
-                openRows.append(i);
+                
             }
         }
-        entryExit = openRows.toString();
+
     }
 
     

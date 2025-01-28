@@ -49,6 +49,7 @@ public class Main {
                 else { 
                 
                     logger.info(explorer.moveForward());
+                    /*  
                     for (String mazeLine : lines) {
                         for (int idx = 0; idx < mazeLine.length(); idx++) {
                             if (mazeLine.charAt(idx) == '#') {
@@ -58,7 +59,7 @@ public class Main {
                             }
                         }
                         logger.trace(System.lineSeparator());
-                    }
+                    }*/
 
                 }
             } 
