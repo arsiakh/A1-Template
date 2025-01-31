@@ -39,7 +39,9 @@ public class Main {
                 Explorer explorer = new Explorer(maze);
                 if (cmd.hasOption("p")) {
                     String path = cmd.getOptionValue("p");
-                    if (path.equals(explorer.moveForward())) {
+                    PathVerification pathVerification = new PathVerification(maze, path);
+
+                    if (pathVerification.verifyPath()) {
                         logger.info("PATH COMPUTED");
                     } else {
                         logger.info("PATH NOT COMPUTED");
@@ -47,8 +49,8 @@ public class Main {
 
                 }
                 else { 
-                
-                    logger.info(explorer.moveForward());
+                    explorer.moveForward();
+                    logger.info(explorer.pathFactored());
                     /*  
                     for (String mazeLine : lines) {
                         for (int idx = 0; idx < mazeLine.length(); idx++) {

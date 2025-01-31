@@ -4,19 +4,22 @@ public class Explorer { //interface explorer that will be impliemented in a righ
 
     private Maze mazeClass;
     private String[][] maze;
+    private String pathCanonical;
+    private String pathFactored;
 
 
     public Explorer(Maze mazeClass) { 
         this.mazeClass = mazeClass;
         this.maze = mazeClass.getMaze();
+        this.pathFactored = "";
+        
                 
     }
 
     public String moveForward() { 
         String[] direction = {"NORTH", "EAST", "SOUTH", "WEST"};
         int entryRow = mazeClass.getEntryRow();
-       
-        
+
         int startRow = entryRow;
         int currentCol = 0;
         StringBuilder path = new StringBuilder();
@@ -102,9 +105,62 @@ public class Explorer { //interface explorer that will be impliemented in a righ
            
             
             }
-            return (path.toString());    
+            pathCanonical = path.toString();
+            return pathCanonical;    
         }
             
+        public String pathCanonical() { 
+            return pathCanonical;
+
+        }
+
+        public String pathFactored() { //FFFF R FFF L FFFFF = 5F R F3 L 5F
+            for (int i = 0; i < pathCanonical.length(); i++) {
+                if (pathCanonical.charAt(i) == 'F') {
+                    int countF = 1;
+                    while (i + 1 < pathCanonical.length() && pathCanonical.charAt(i + 1) == 'F') {
+                        countF++;
+                        i++;
+                    }
+                    if (countF > 1) {
+                        pathFactored += countF + "F";
+                    } else {
+                        pathFactored += "F";
+                    }
+                    
+                } 
+                if (pathCanonical.charAt(i) == 'R') {
+                    int countR = 1;
+                    while (i + 1 < pathCanonical.length() && pathCanonical.charAt(i + 1) == 'R') {
+                        countR++;
+                        i++;
+                    }
+                    if (countR > 1) {
+                        pathFactored += countR + "R";
+                    } else {
+                        pathFactored += "R";
+                    }
+                    
+                    }
+                if (pathCanonical.charAt(i) == 'L') {
+                    int countL = 1;
+                    while (i + 1 < pathCanonical.length() && pathCanonical.charAt(i + 1) == 'L') {
+                        countL++;
+                        i++;
+                    }
+                    if (countL > 1) {
+                        pathFactored += countL + "L";
+                    } else {
+                        pathFactored += "L";
+                    }
+                    }
+                } 
+                return pathFactored;
+                
+         
+
+
+        }
         
 
 
