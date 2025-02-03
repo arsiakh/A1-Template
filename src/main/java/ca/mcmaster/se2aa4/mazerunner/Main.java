@@ -1,8 +1,6 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
-import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+
 
 import org.apache.commons.cli.*;
 
@@ -15,59 +13,38 @@ public class Main {
 
     public static void main(String[] args) {
         logger.info("** Starting Maze Runner");
+        
         try {
-            // create Options object
-            Options options = new Options();
-            // add i option (expects an argument for the input file)
-            options.addOption("i", true, "specify the input file");
-            options.addOption("p", true, "verify input path");
-            CommandLineParser parser = new DefaultParser();
-            CommandLine cmd = parser.parse(options, args);  
+            InputFlags flags = new InputFlags(args); //create new object class for input flags
+            if (flags.hasInputFile()) {//-i flag
 
-            if (cmd.hasOption("i")) {
-                // Retrieve the value of the -i flag
-                String inputFile = cmd.getOptionValue("i");
-                // Proceed with processing the input file
-                logger.info("**** Reading the maze from file " + inputFile);
-                BufferedReader reader = new BufferedReader(new FileReader(inputFile));
-                List<String> lines = new ArrayList<>();
-                String line;
-                while ((line = reader.readLine()) != null) {
-                    lines.add(line);
-                }
-                Maze maze = new Maze(lines);
-                Explorer explorer = new Explorer(maze);
-                if (cmd.hasOption("p")) {
-                    String path = cmd.getOptionValue("p");
-                    PathVerification pathVerification = new PathVerification(maze, path);
-
-                    if (pathVerification.verifyPath()) {
-                        logger.info("PATH COMPUTED");
+                String inputFile = flags.getInputFile(); //retrieve encapsulated information for input file
+                
+                MazeLoader loader = new MazeLoader(inputFile); //create new object for maze loader to get info from file
+                Maze maze = new Maze(loader); //create new object for maze which gets file matrix from MazeLoader
+                Explorer explorer = new RightHandAlgorithm(); //create new object for explorer using right hand algorithm
+            
+                
+                if (flags.hasPath()) { //-p flag
+                    String path = flags.getPath(); //retrieve encapsulated information for path
+                    PathVerification pathVerification = new PathVerification(maze); //create new object for path verification
+                    if (pathVerification.verifyPath(path)) { //verify path
+                        System.out.println("correct path");
                     } else {
-                        logger.info("PATH NOT COMPUTED");
+                        System.out.println("incorrect path");
                     }
-
                 }
                 else { 
-                    explorer.moveForward();
-                    logger.info(explorer.pathFactored());
-                    /*  
-                    for (String mazeLine : lines) {
-                        for (int idx = 0; idx < mazeLine.length(); idx++) {
-                            if (mazeLine.charAt(idx) == '#') {
-                                logger.trace("WALL ");
-                            } else if (mazeLine.charAt(idx) == ' ') {
-                                logger.trace("PASS ");
-                            }
-                        }
-                        logger.trace(System.lineSeparator());
-                    }*/
+                    String generatedPath = explorer.findPath(maze); //generate path using explorer object
+                    PathFormat format = new PathFormat(generatedPath); //create new object for path format including canonical and factored
+                    System.out.println(format.pathCanonical()); //display results
+                    System.out.println(format.pathFactored());
 
                 }
             } 
             
-            
-            
+        } catch(ParseException e) {
+            logger.error("/!\\ Failed to parse command line arguments /!\\", e);
         } catch(Exception e) {
             logger.error("/!\\ An error has occured /!\\");
         }

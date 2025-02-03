@@ -1,7 +1,5 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
-import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class Maze {
@@ -10,18 +8,23 @@ public class Maze {
     private List<String> lines;
     private int row;
     private int col;
-    private int entryRow = -1;
+    private int entryRow = -1; //initialize entryRow
 
-    public Maze(List<String> lines) {
-        this.lines = lines;
-        this.row = lines.size();
-        this.col = lines.get(0).length();
-        this.maze = new String[row][col];
+
+    public Maze(MazeLoader loader) { 
+        lines = loader.loadMaze();//use parameter to load array list
+        if (lines.isEmpty()) {
+            throw new IllegalStateException("Maze file is empty or could not be read."); //if it failed to read file and array is empty
+        }
+        this.row = lines.size(); //get the size of the array
+        this.col = lines.get(0).length(); //get the length of the first line
+        this.maze = copyMaze(); //create a new maze object
         this.entryRow = -1;
-        copyMaze();
-        checkValidEntryOrExit();
-        printMaze();
+        checkValidEntryOrExit(); //determine entry/exit
+    
     }
+
+
     // Getter for maze grid
     public String[][] getMaze() {
         return maze;
@@ -51,17 +54,19 @@ public class Maze {
         return entryRow;
     }
 
-    public void copyMaze() {
+    public String[][] copyMaze() {
+        maze = new String[row][col]; //instantiate maze object
         for (int i = 0; i < row; i++) {
-            String currentLine = lines.get(i);
+            String currentLine = lines.get(i); //get current line
             for (int j = 0; j < col; j++) {
-                if (currentLine.charAt(j) == '#') {
+                if (currentLine.charAt(j) == '#') { //if current line is a wall
                     maze[i][j] = "WALL";
                 } else if (currentLine.charAt(j) == ' ') {
                     maze[i][j] = "PASS";
                 }
             }
         }
+        return maze;
     }
 
     public void printMaze() {
@@ -74,9 +79,8 @@ public class Maze {
     }
 
     public void checkValidEntryOrExit() { 
-        StringBuilder openRows = new StringBuilder();
         for (int i = 0; i < row; i++) {
-            if (maze[i][0] == "PASS") {
+            if (maze[i][0] == "PASS") { //if first column has a pass change it to entry
                 maze[i][0] = "ENTRY";
                 entryRow = i;
             }
