@@ -13,6 +13,10 @@ public class PathVerification {
     }
 
     public boolean verifyPath(String path) {
+        if (path.matches(".*\\d+.*")) {
+            PathFormat formatter = new PathFormat(path);
+            path = formatter.pathCanonical();
+        }
         int row = mazeClass.getEntryRow(); //begin with starting position
         int col = 0;
         String direction = "EAST"; //facing east

@@ -1,7 +1,6 @@
 package ca.mcmaster.se2aa4.mazerunner;
 
 
-
 import org.apache.commons.cli.*;
 
 import org.apache.logging.log4j.LogManager;
@@ -37,16 +36,15 @@ public class Main {
                 else { 
                     String generatedPath = explorer.findPath(maze); //generate path using explorer object
                     PathFormat format = new PathFormat(generatedPath); //create new object for path format including canonical and factored
-                    System.out.println(format.pathCanonical()); //display results
                     System.out.println(format.pathFactored());
 
                 }
             } 
             
         } catch(ParseException e) {
-            logger.error("/!\\ Failed to parse command line arguments /!\\", e);
+            System.err.println("/!\\ Failed to parse command line arguments /!\\ " + e);
         } catch(Exception e) {
-            logger.error("/!\\ An error has occured /!\\");
+            System.err.println("/!\\ An error has occured /!\\");
         }
         logger.info("**** Computing path");
         logger.warn("PATH NOT COMPUTED");

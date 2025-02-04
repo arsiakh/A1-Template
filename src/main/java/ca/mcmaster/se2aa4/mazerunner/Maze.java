@@ -9,6 +9,7 @@ public class Maze {
     private int row;
     private int col;
     private int entryRow = -1; //initialize entryRow
+    private int exitRow = -1; //initialize exitRow
 
 
     public Maze(MazeLoader loader) { 
@@ -53,6 +54,10 @@ public class Maze {
     public int getEntryRow() {
         return entryRow;
     }
+    public int getExitRow() {
+        return exitRow;
+    }
+
 
     public String[][] copyMaze() {
         maze = new String[row][col]; //instantiate maze object
@@ -81,11 +86,12 @@ public class Maze {
     public void checkValidEntryOrExit() { 
         for (int i = 0; i < row; i++) {
             if (maze[i][0] == "PASS") { //if first column has a pass change it to entry
-                maze[i][0] = "ENTRY";
+                maze[i][0] = "EXIT";
                 entryRow = i;
             }
             if (maze[i][col - 1] == "PASS") {
                 maze[i][col - 1] = "EXIT";
+                exitRow = i;
                 
             }
         }
