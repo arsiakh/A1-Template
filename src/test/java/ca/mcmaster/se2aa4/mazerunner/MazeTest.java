@@ -13,20 +13,27 @@ import org.junit.jupiter.api.Test;
 
 public class MazeTest {
     private MazeLoader loader;
+    private MazeLoader loader2;
     private Maze maze;
+    private Maze maze2;
     private Explorer rightHandExplorer;
     private PathVerification pathVerification;
+    private PathVerification pathVerification2;
 
     @BeforeEach
     void setUp() {
         // Create a standard initializer with default parameters
         String testMazeFilePath = "./examples/straight.maz.txt";
+        String testMazeFilePath2 = "./examples/medium.maz.txt";
         // Setup objects that will be used across multiple test methods
         try {
             loader = new MazeLoader(testMazeFilePath);
+            loader2 = new MazeLoader(testMazeFilePath2);
             maze = new Maze(loader);
+            maze2 = new Maze(loader2);
             rightHandExplorer = new RightHandAlgorithm();
             pathVerification = new PathVerification(maze);
+            pathVerification2 = new PathVerification(maze2);
         } catch (Exception e) {
             fail("Test setup failed: " + e.getMessage());
         }
@@ -36,7 +43,7 @@ public class MazeTest {
     
     @Test
     public void testFindPath() {
-        assertTrue(pathVerification.verifyPath("4F")); //for straight maze 4F is correct path
+        assertTrue(pathVerification2.verifyPath("FR6F2L8FR2FR2F2L2FR2FR4FR2FL4FL2F2L2FR4FR2FL2FR2FR4FR2F2L2FL2FR2FR4FR2F2L2FL2FR2F2L2FR2FR2F2L4FR2FR2F2L4FR2FR2F2L4FR2FR2F2L2FR10FR2FR8F2L8FL2FR4FR2FR2F2L2FR2FR14F2L12FR2FR6F2L4FR2FR6FR2FL6F2L6FR2FR8F2L12FR2FR10F2L6FR2FR4F2L4FL2FR4FL2FR2FL2FR2FL2FR2FL4FR2FR2F2L4FR2FR6FR2F2L2FR2FR4F2L2FR2FR4F2L4FR2FR2F2L2FR2FR4FR2FL2F2L2FR2FR6FL2FR8F2L8FR2FR10FR4FR2F2L2FR2F2L2FR2FR2FL4FR2F2L4F2L2FR4FR2FR2F2L4FR2FR6F2L6FR4FR2FR2FL2F2L2FR4FR2FR2F2L2FR2FR4F2L4FL4FR2FR4F2L2FR2F2L2FR2FR2F2L6FR2FR8FR6FR2F2L2FL2FRF")); //for straight maze 4F is correct path
     }
 
     @Test 
@@ -84,9 +91,7 @@ public class MazeTest {
         // Test with input file flag
         String[] args = {"-i", "./examples/small.maze.txt"};
         InputFlags flags = new InputFlags(args);
-        //InputFlags flags = new InputFlags.Builder()
-    //.parseArgs(args)
-    //.build();
+        
         
         assertTrue(flags.hasInputFile(), "Should detect input file flag");
         assertEquals("./examples/small.maze.txt", flags.getInputFile(), "Should return correct input file");
@@ -97,9 +102,7 @@ public class MazeTest {
         // Test with input file flag
         String[] args = {"-p", "4F" };
         InputFlags flags = new InputFlags(args);
-        //InputFlags flags = new InputFlags.Builder()
-    //.parseArgs(args)
-    //.build();
+        
         
         assertTrue(flags.hasPath(), "Should detect path flag");
         assertEquals("4F", flags.getPath(), "Should return correct input path");
