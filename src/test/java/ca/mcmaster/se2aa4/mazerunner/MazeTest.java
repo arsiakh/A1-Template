@@ -84,6 +84,9 @@ public class MazeTest {
         // Test with input file flag
         String[] args = {"-i", "./examples/small.maze.txt"};
         InputFlags flags = new InputFlags(args);
+        //InputFlags flags = new InputFlags.Builder()
+    //.parseArgs(args)
+    //.build();
         
         assertTrue(flags.hasInputFile(), "Should detect input file flag");
         assertEquals("./examples/small.maze.txt", flags.getInputFile(), "Should return correct input file");
@@ -94,6 +97,9 @@ public class MazeTest {
         // Test with input file flag
         String[] args = {"-p", "4F" };
         InputFlags flags = new InputFlags(args);
+        //InputFlags flags = new InputFlags.Builder()
+    //.parseArgs(args)
+    //.build();
         
         assertTrue(flags.hasPath(), "Should detect path flag");
         assertEquals("4F", flags.getPath(), "Should return correct input path");
